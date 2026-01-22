@@ -117,9 +117,15 @@ void AlfredoCRSF::processPacketIn(uint8_t len)
     } 
     else if (hdr->device_addr == CRSF_ADDRESS_CRSF_TRANSMITTER) //Headset to TX
     {
-        if (hdr->type == CRSF_FRAMETYPE_RC_CHANNELS_PACKED)
+        switch (hdr->type)
         {
+        case CRSF_FRAMETYPE_RC_CHANNELS_PACKED:
             packetChannelsPacked(hdr);
+            break;
+        //Backpack telemetry    
+        case CRSF_FRAMETYPE_ATTITUDE: 
+            packetAttitude(hdr);
+            break;
         }
     }
 }
